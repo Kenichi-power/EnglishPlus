@@ -5894,6 +5894,13 @@ react-native-codegen@^0.71.5:
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
 
+react-native-element-dropdown@^2.9.0:
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/react-native-element-dropdown/-/react-native-element-dropdown-2.9.0.tgz#c218ab512bd8be69fa0ac70462293863f8cfd527"
+  integrity sha512-2Y/bmoFPTdKOUXbYloEKpMTWYE2VHrvva/5tgEuHqAlfAtGGr3r/ob0L0YYH1am5N0n1PKo3+eLf0c79QUSzYw==
+  dependencies:
+    lodash "^4.17.21"
+
 react-native-error-boundary@^1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/react-native-error-boundary/-/react-native-error-boundary-1.2.3.tgz#0c9261c2f7ab97222e0a0101852189f140c5f6e7"

@@ -4,39 +4,80 @@ import {COLORS} from '../../constants';
 const windowWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
-  container: {
+  containers: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#66bf39e1',
   },
   lowContainer: {
     flex: 1,
     marginTop: 50,
     width: windowWidth,
     flexDirection: 'column',
-    gap: 20,
   },
   backButton: {
     width: 60,
     height: 50,
     borderRadius: 12,
-    borderWidth: 2,
-    borderColor: COLORS.secondary + '40',
-    backgroundColor: '#66bf39e1',
+    backgroundColor: COLORS.accent,
+
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 10,
     marginTop: 10,
   },
   mainContainer: {
-    borderWidth: 3,
-    borderColor: COLORS.secondary + '40',
-    backgroundColor: '#66bf39e1',
+    backgroundColor: COLORS.accent,
+
     borderRadius: 20,
     height: 75,
     marginHorizontal: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+
+    // backgroundColor: 'white',
+    // padding: 16,
+  },
+  dropdown: {
+    width: 150,
+    height: 25,
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
   },
 });
 export default styles;
