@@ -9,7 +9,6 @@ import {
   Modal,
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
-
 import styles from './style';
 import {COLORS} from '../../constants';
 
@@ -19,11 +18,10 @@ const First = ({navigation, route}) => {
   const [inputValue, setInputValue] = useState({});
   const [isNext, setIsNext] = useState(false);
   const [total, setTotal] = useState([]);
-  const [isFocus, setIsFocus] = useState(false);
-
+  const [isFocus, setIsFocus] = useState({});
+  const [state, setState] = useState({});
   const [showScoreModal, setShowScoreModal] = useState(false);
-
-  console.log('total', total);
+  const [showExitModal, setShowExitModal] = useState(false);
 
   useEffect(() => {
     const quizArr = Object.values(inputValue);
@@ -66,13 +64,27 @@ const First = ({navigation, route}) => {
       setCurrent(current + 1);
     }
   };
-
-  const handleChange = (e, i) => {
-    let obj = {...inputValue};
+  const handleChangeFocus = (e, i) => {
+    let obj = {...isFocus};
     obj[i] = e;
-    setInputValue(obj);
+    setIsFocus(obj);
   };
-  const renderModal = () => {
+  const handleChangeType = (e, i) => {
+    let object = {};
+    for (let prop in inputValue) {
+      if (inputValue[prop] !== e) {
+        object[prop] = inputValue[prop];
+      }
+    }
+    object[i] = e;
+    setInputValue(object);
+  };
+  const handleChange = (e, i, value, setFunc) => {
+    let obj = {...value};
+    obj[i] = e;
+    setFunc(obj);
+  };
+  const renderDoneModal = () => {
     const score = total.length > 0 && total.reduce((a, b) => a + b);
     const allQuestions = data.reduce((acc, e) => acc + e.correct_option.length);
     return (
@@ -144,6 +156,86 @@ const First = ({navigation, route}) => {
       </Modal>
     );
   };
+  const exitModal = () => {
+    return (
+      <Modal animationType="slide" transparent={true} visible={showExitModal}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: COLORS.primary,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <View
+            style={{
+              backgroundColor: COLORS.white,
+              width: '90%',
+              borderRadius: 20,
+              padding: 20,
+              alignItems: 'center',
+            }}>
+            <Text style={{fontSize: 30, fontWeight: 'bold'}}>Warning</Text>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                marginVertical: 20,
+              }}>
+              <Text
+                style={{
+                  fontSize: 30,
+                }}>
+                Are you sure?
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 30,
+              }}>
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={{
+                  backgroundColor: COLORS.error,
+                  padding: 20,
+                  width: 120,
+                  borderRadius: 20,
+                }}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: COLORS.white,
+                    fontSize: 20,
+                  }}>
+                  Exit
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setShowExitModal(false)}
+                style={{
+                  backgroundColor: COLORS.accent,
+                  padding: 20,
+                  width: 120,
+                  borderRadius: 20,
+                }}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: COLORS.white,
+                    fontSize: 20,
+                  }}>
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
   const renderQuestionType1 = () => {
     return (
       <View
@@ -167,7 +259,9 @@ const First = ({navigation, route}) => {
                 <TextInput
                   autoCapitalize="none"
                   value={inputValue[i]}
-                  onChangeText={e => handleChange(e, i)}
+                  onChangeText={e =>
+                    handleChange(e, i, inputValue, setInputValue)
+                  }
                   placeholder="_______"
                   style={{width: 120}}
                   maxLength={item.length - 1}
@@ -192,17 +286,48 @@ const First = ({navigation, route}) => {
           {data[current].id}) {data[current].question}
         </Text>
         <View style={{gap: 10, padding: 15}}>
-          <View style={{flexDirection: 'column', gap: 5}}>
-            <Text style={{marginBottom: 10}}>{data[current].text}</Text>
-            {data[current].options.map((item, i) => {
+          <View
+            style={{
+              justifyContent: 'center',
+              flexDirection: 'row',
+              gap: 15,
+              flexWrap: 'wrap',
+              borderWidth: 2,
+              borderRadius: 15,
+              borderColor: '#66bf39e1',
+            }}>
+            {data[current].options.map((e, i) => {
+              const through = Object.values(inputValue).includes(e.value);
               return (
-                <View style={styles.container}>
+                <Text
+                  key={i}
+                  style={{
+                    textDecorationLine: through ? 'line-through' : 'none',
+                    opacity: through ? 0.5 : 1,
+                  }}>
+                  {e.label}
+                </Text>
+              );
+            })}
+          </View>
+          <Text style={{marginBottom: 10}}>{data[current].text}</Text>
+
+          <View style={{flexDirection: 'row', gap: 15, flexWrap: 'wrap'}}>
+            {data[current].options.map((item, i) => {
+              const doneStyle = inputValue[i] ? true : false;
+              return (
+                <View key={i} style={styles.container}>
                   <Text>{i + 1}. </Text>
                   <Dropdown
                     style={[
                       styles.dropdown,
-                      isFocus && {borderColor: '#66bf39e1'},
+                      isFocus[i] && {borderWidth: 2},
+                      {
+                        borderColor: doneStyle ? '#66bf39e1' : 'black',
+                        borderWidth: doneStyle ? 2 : 1,
+                      },
                     ]}
+                    mode="modal"
                     placeholderStyle={styles.placeholderStyle}
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
@@ -211,15 +336,41 @@ const First = ({navigation, route}) => {
                     maxHeight={300}
                     labelField="label"
                     valueField="value"
-                    placeholder={!isFocus ? 'Select item' : '...'}
-                    searchPlaceholder="Search..."
+                    placeholder={!isFocus[i] ? 'Select item' : '...'}
                     value={inputValue[i]}
-                    onFocus={() => setIsFocus(true)}
-                    onBlur={() => setIsFocus(false)}
+                    onFocus={() => handleChangeFocus(true, i)}
+                    onBlur={() => handleChangeFocus(false, i)}
                     onChange={item => {
-                      handleChange(item.value, i);
-                      setIsFocus(false);
+                      handleChange(true, i, state, setState);
+                      handleChangeType(item.value, i);
+                      handleChangeFocus(false, i);
                     }}
+                    renderItem={e => {
+                      const through = Object.values(inputValue).includes(
+                        e.value,
+                      );
+                      return (
+                        <View
+                          style={{
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            height: 50,
+                          }}>
+                          <Text
+                            style={{
+                              textDecorationLine: through
+                                ? 'line-through'
+                                : 'none',
+                              opacity: through ? 0.5 : 1,
+                            }}>
+                            {e.label}
+                          </Text>
+                        </View>
+                      );
+                    }}
+                    showsVerticalScrollIndicator="false"
+                    dropdownPosition="auto"
+                    backgroundColor="rgba(0, 0, 0, 0.4)"
                   />
                 </View>
               );
@@ -233,19 +384,24 @@ const First = ({navigation, route}) => {
   return (
     <View style={styles.containers}>
       <View style={styles.lowContainer}>
-        <View>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <View style={styles.backButton}>
-              <Text style={{color: 'white', fontWeight: 500, fontSize: 18}}>
-                Back
-              </Text>
-            </View>
+        <View
+          style={{
+            alignItems: 'flex-end',
+            marginRight: 10,
+          }}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => setShowExitModal(true)}>
+            <Text style={{color: 'white', fontWeight: 500, fontSize: 18}}>
+              X
+            </Text>
           </TouchableOpacity>
         </View>
         <ScrollView>
           {data[current].type == 1 && renderQuestionType1()}
           {data[current].type == 2 && renderQuestionType2()}
-          {renderModal()}
+          {renderDoneModal()}
+          {exitModal()}
           {isNext && (
             <TouchableOpacity onPress={() => handleNext()}>
               <View style={styles.mainContainer}>
@@ -253,7 +409,7 @@ const First = ({navigation, route}) => {
                   style={{
                     color: 'white',
                   }}>
-                  Next
+                  {current + 1 == data.length ? 'Submit' : 'Next'}
                 </Text>
               </View>
             </TouchableOpacity>

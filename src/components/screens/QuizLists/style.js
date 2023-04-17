@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 50,
     borderRadius: 12,
-    backgroundColor: COLORS.accent,
+    backgroundColor: COLORS.error,
 
     alignItems: 'center',
     justifyContent: 'center',
@@ -41,15 +41,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
-
-    // backgroundColor: 'white',
-    // padding: 16,
   },
   dropdown: {
-    width: 150,
+    width: (windowWidth - 150) / 2,
     height: 25,
     borderColor: 'gray',
-    borderWidth: 0.5,
+    borderWidth: 2,
     borderRadius: 8,
     paddingHorizontal: 8,
   },

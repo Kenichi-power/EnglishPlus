@@ -8,8 +8,9 @@ import data from '../../data/QuizData';
 import newData from '../../data/data1';
 
 const windowWidth = Dimensions.get('window').width;
-
 const QuizList = () => {
+  console.log('newData', newData);
+
   const navigation = useNavigation();
   return (
     <View
@@ -41,60 +42,16 @@ const QuizList = () => {
                 marginLeft: 10,
                 marginTop: 10,
               }}>
-              <Text style={{color: 'white', fontWeight: 500, fontSize: 18}}>
-                Back
-              </Text>
+              <Text style={{color: 'white', fontSize: 18}}>Back</Text>
             </View>
           </TouchableOpacity>
         </View>
-        {/* <View>
-          <TouchableOpacity onPress={() => navigation.navigate('Quiz', {data})}>
-            <View
-              style={{
-                borderWidth: 3,
-                borderColor: COLORS.secondary + '40',
-                backgroundColor: '#66bf39e1',
-                borderRadius: 20,
-                height: 75,
-                marginHorizontal: 10,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{
-                  color: 'white',
-                }}>
-                First
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TouchableOpacity onPress={() => navigation.navigate('Quiz', {data})}>
-            <View
-              style={{
-                borderWidth: 3,
-                borderColor: COLORS.secondary + '40',
-                backgroundColor: '#66bf39e1',
-                borderRadius: 20,
-                height: 75,
-                marginHorizontal: 10,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{
-                  color: 'white',
-                }}>
-                Second
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View> */}
         {newData.map((item, i) => (
           <View key={i}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('QuizLists', {data: item})}>
+              onPress={() =>
+                navigation.navigate('QuizLists', {data: item.test})
+              }>
               <View
                 style={{
                   borderWidth: 3,
@@ -110,7 +67,7 @@ const QuizList = () => {
                   style={{
                     color: 'white',
                   }}>
-                  Second
+                  {item.title}
                 </Text>
               </View>
             </TouchableOpacity>
