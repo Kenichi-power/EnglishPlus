@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {COLORS} from '../../../constants';
 
 const styles = StyleSheet.create({
   container: {
@@ -9,9 +10,10 @@ const styles = StyleSheet.create({
   },
   mainText: {
     fontSize: 40,
-    fontWeight: '600',
+    fontWeight: '900',
     marginTop: 300,
-    color: '#347414',
+    color: COLORS.primary,
+    fontFamily: 'Arial',
   },
   secondText: {
     fontSize: 20,
@@ -26,6 +28,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 120,
+    backgroundColor: COLORS.primary,
   },
 });
 export default styles;

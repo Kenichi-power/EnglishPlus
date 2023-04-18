@@ -2,14 +2,17 @@ import React from 'react';
 
 import {View, Text, TouchableOpacity, Dimensions} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {COLORS} from '../../constants';
-import LinearGradient from 'react-native-linear-gradient';
-import data from '../../data/QuizData';
-import newData from '../../data/data1';
+import {COLORS} from '../../../constants';
+
+import newData from '../../../data/quizDatas';
+import {useAppDispatch, useAppSelector} from '../../../store';
 
 const windowWidth = Dimensions.get('window').width;
 const QuizList = () => {
+  const dispatch = useAppDispatch();
+  const result = useAppSelector(item => item.results.result);
   console.log('newData', newData);
+  console.log('result', result);
 
   const navigation = useNavigation();
   return (
@@ -34,9 +37,7 @@ const QuizList = () => {
                 width: 60,
                 height: 50,
                 borderRadius: 12,
-                borderWidth: 2,
-                borderColor: COLORS.secondary + '40',
-                backgroundColor: '#66bf39e1',
+                backgroundColor: COLORS.accent,
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginLeft: 10,
@@ -50,7 +51,10 @@ const QuizList = () => {
           <View key={i}>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('QuizLists', {data: item.test})
+                navigation.navigate('QuizScreen', {
+                  data: item.test,
+                  title: item.title,
+                })
               }>
               <View
                 style={{

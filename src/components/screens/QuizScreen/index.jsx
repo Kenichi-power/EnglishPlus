@@ -10,10 +10,12 @@ import {
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import styles from './style';
-import {COLORS} from '../../constants';
+import {COLORS} from '../../../constants';
+import {useAppDispatch, useAppSelector} from '../../../store';
+import {setReset, setResult} from '../../../store/result';
 
-const First = ({navigation, route}) => {
-  const {data} = route.params;
+const QuizScreen = ({navigation, route}) => {
+  const {data, title} = route.params;
   const [current, setCurrent] = useState(0);
   const [inputValue, setInputValue] = useState({});
   const [isNext, setIsNext] = useState(false);
@@ -22,7 +24,10 @@ const First = ({navigation, route}) => {
   const [state, setState] = useState({});
   const [showScoreModal, setShowScoreModal] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
+  const result = useAppSelector(item => item.results.result);
+  const dispatch = useAppDispatch();
 
+  // console.log('title', result[result.length - 1].id);
   useEffect(() => {
     const quizArr = Object.values(inputValue);
     quizArr.length === data[current].correct_option.length &&
@@ -32,7 +37,20 @@ const First = ({navigation, route}) => {
       ? setIsNext(true)
       : setIsNext(false);
   }, [inputValue]);
-
+  useEffect(() => {
+    if (showScoreModal) {
+      nextAndGo();
+    }
+  }, [showScoreModal]);
+  const nextAndGo = () => {
+    const score = total.length > 0 && total.reduce((a, b) => a + b);
+    const allQuestions = data.reduce(
+      (acc, e) => acc + e.correct_option.length,
+      0,
+    );
+    const id = result[result.length - 1] ? result[result.length - 1].id + 1 : 1;
+    dispatch(setResult({id, title, allQuestions, score, time: new Date()}));
+  };
   const handleNext = () => {
     let score = 0;
 
@@ -86,7 +104,10 @@ const First = ({navigation, route}) => {
   };
   const renderDoneModal = () => {
     const score = total.length > 0 && total.reduce((a, b) => a + b);
-    const allQuestions = data.reduce((acc, e) => acc + e.correct_option.length);
+    const allQuestions = data.reduce(
+      (acc, e) => acc + e.correct_option.length,
+      0,
+    );
     return (
       <Modal animationType="slide" transparent={true} visible={showScoreModal}>
         <View
@@ -105,7 +126,7 @@ const First = ({navigation, route}) => {
               alignItems: 'center',
             }}>
             <Text style={{fontSize: 30, fontWeight: 'bold'}}>
-              {score > allQuestions.length / 2 ? 'Congratulations!' : 'Oops!'}
+              {score > allQuestions / 2 ? 'Congratulations!' : 'Oops!'}
             </Text>
 
             <View
@@ -119,9 +140,7 @@ const First = ({navigation, route}) => {
                 style={{
                   fontSize: 30,
                   color:
-                    score > allQuestions.length / 2
-                      ? COLORS.success
-                      : COLORS.error,
+                    score > allQuestions / 2 ? COLORS.success : COLORS.error,
                 }}>
                 {score}
               </Text>
@@ -130,7 +149,7 @@ const First = ({navigation, route}) => {
                   fontSize: 20,
                   color: COLORS.black,
                 }}>
-                / {allQuestions.length}
+                / {allQuestions}
               </Text>
             </View>
 
@@ -419,4 +438,4 @@ const First = ({navigation, route}) => {
     </View>
   );
 };
-export default First;
+export default QuizScreen;

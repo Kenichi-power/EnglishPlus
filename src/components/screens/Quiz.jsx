@@ -9,7 +9,7 @@ import {
   Modal,
   Animated,
 } from 'react-native';
-import {COLORS, SIZES} from '../constants';
+import {COLORS, SIZES} from '../../constants';
 
 const Quiz = ({navigation, route}) => {
   const {data} = route.params;

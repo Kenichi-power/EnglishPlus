@@ -4,12 +4,11 @@ import {
   NativeStackScreenProps,
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
-import HomeScreen from '../screens/HomeScreen/HomeScreen';
-//MainTabNavigator
+import HomeScreen from '../screens/HomeScreen';
 import MainTabNavigator from './MainTabNavigator';
-import Quiz from '../screens/Quiz';
-import QuizList from '../screens/QuizScreen/QuizList';
-import First from '../screens/QuizLists/FIrst';
+
+import QuizScreen from '../screens/QuizScreen';
+import QuizList from '../screens/QuizList';
 
 export type MainStackParamList = {
   JournalModal: {str: string};
@@ -38,18 +37,13 @@ const AppNavigator = () => {
             options={{...noHeaderStyle}}
           />
           <Stack.Screen
-            name="Quiz"
-            component={Quiz}
-            options={{...noHeaderStyle}}
-          />
-          <Stack.Screen
             name="QuizList"
             component={QuizList}
             options={{...noHeaderStyle}}
           />
           <Stack.Screen
-            name="QuizLists"
-            component={First}
+            name="QuizScreen"
+            component={QuizScreen}
             options={{...noHeaderStyle}}
           />
           <Stack.Screen name="Home" component={HomeScreen} />

@@ -5,9 +5,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Tabbar from '../screens/TabNavigatorScreens/TabBar/TabBar';
 
 import styles from '../screens/TabNavigatorScreens/TabBar/styles';
-import About from '../screens/AboutScreen/About';
-import HomeScreen from '../screens/HomeScreen/HomeScreen';
-import Info from '../screens/Info/Info';
+import HomeScreen from '../screens/HomeScreen';
+import Info from '../screens/Info';
+import About from '../screens/AboutScreen';
 
 const Tab = createBottomTabNavigator();
 const MainTabNavigator = () => {
