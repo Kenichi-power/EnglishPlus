@@ -1,5 +1,6 @@
 import {Dimensions, StyleSheet} from 'react-native';
 import {COLORS} from '../../../constants';
+import {useAppSelector} from '../../../store';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -15,6 +16,15 @@ const styles = StyleSheet.create({
     marginTop: 50,
     width: windowWidth,
     flexDirection: 'column',
+  },
+  sortButton: {
+    width: 100,
+    height: 50,
+    borderTopEndRadius: 10,
+    borderTopStartRadius: 10,
+    backgroundColor: COLORS.accent,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 export default styles;

@@ -16,6 +16,14 @@ export default data = [
           'subscription',
           'direct message',
         ],
+        image: [
+          require('../assets/images/1-1.png'),
+          require('../assets/images/1-2.png'),
+          require('../assets/images/1-3.png'),
+          require('../assets/images/1-4.png'),
+          require('../assets/images/1-5.png'),
+          require('../assets/images/1-6.png'),
+        ],
       },
       {
         id: 2,
@@ -63,6 +71,15 @@ export default data = [
           'fascinated',
           'annoyed',
           'embarrassed',
+        ],
+        image: [
+          require('../assets/images/2-1.png'),
+          require('../assets/images/2-2.png'),
+          require('../assets/images/2-3.png'),
+          require('../assets/images/2-4.png'),
+          require('../assets/images/2-5.png'),
+          require('../assets/images/2-6.png'),
+          require('../assets/images/2-7.png'),
         ],
       },
       {

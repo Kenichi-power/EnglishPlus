@@ -7,12 +7,13 @@ import {
   TextInput,
   ScrollView,
   Modal,
+  Image,
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import styles from './style';
 import {COLORS} from '../../../constants';
 import {useAppDispatch, useAppSelector} from '../../../store';
-import {setReset, setResult} from '../../../store/result';
+import {setResult} from '../../../store/result';
 
 const QuizScreen = ({navigation, route}) => {
   const {data, title} = route.params;
@@ -27,7 +28,6 @@ const QuizScreen = ({navigation, route}) => {
   const result = useAppSelector(item => item.results.result);
   const dispatch = useAppDispatch();
 
-  // console.log('title', result[result.length - 1].id);
   useEffect(() => {
     const quizArr = Object.values(inputValue);
     quizArr.length === data[current].correct_option.length &&
@@ -272,19 +272,27 @@ const QuizScreen = ({navigation, route}) => {
             return (
               <View
                 key={i}
-                style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{width: 20}}>{i + 1}.</Text>
-                <Text style={{}}>{item[0]}</Text>
-                <TextInput
-                  autoCapitalize="none"
-                  value={inputValue[i]}
-                  onChangeText={e =>
-                    handleChange(e, i, inputValue, setInputValue)
-                  }
-                  placeholder="_______"
-                  style={{width: 120}}
-                  maxLength={item.length - 1}
-                />
+                style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={{width: 20}}>{i + 1}.</Text>
+                  <Image
+                    source={data[current].image[i]}
+                    style={{width: 90, height: 90}}
+                  />
+                </View>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={{}}>{item[0]}</Text>
+                  <TextInput
+                    autoCapitalize="none"
+                    value={inputValue[i]}
+                    onChangeText={e =>
+                      handleChange(e, i, inputValue, setInputValue)
+                    }
+                    placeholder="_______"
+                    style={{width: 120}}
+                    maxLength={item.length - 1}
+                  />
+                </View>
               </View>
             );
           })}

@@ -1,13 +1,24 @@
-import React from 'react';
-import {ScrollView, Text, View, Dimensions} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  ScrollView,
+  Text,
+  View,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 import styles from './style';
-import {useAppSelector} from '../../../store';
+import {useAppDispatch, useAppSelector} from '../../../store';
 import {COLORS} from '../../../constants';
+import {setStats} from '../../../store/stats';
+import {selectFilteredResults} from '../../../store/result';
 
 const windowWidth = Dimensions.get('window').width;
 
 const Info = () => {
-  const result = useAppSelector(item => item.results.result);
+  const result = useAppSelector(selectFilteredResults);
+  const stats = useAppSelector(item => item.stats.stats);
+  const dispatch = useAppDispatch();
+  console.log('result', result);
 
   return (
     <View style={styles.containers}>
@@ -20,14 +31,80 @@ const Info = () => {
           <Text style={{fontSize: 20, color: 'white', fontWeight: '800'}}>
             Stats
           </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              borderTopEndRadius: 10,
+              borderTopStartRadius: 10,
+              backgroundColor: 'white',
+              gap: 10,
+              marginTop: 10,
+            }}>
+            <TouchableOpacity onPress={() => dispatch(setStats('all'))}>
+              <View
+                style={[
+                  styles.sortButton,
+                  {backgroundColor: stats !== 'all' ? 'white' : COLORS.accent},
+                ]}>
+                <Text
+                  style={{
+                    color: stats === 'all' ? 'white' : COLORS.accent,
+                    fontSize: 18,
+                  }}>
+                  All
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => dispatch(setStats('success'))}>
+              <View
+                style={[
+                  styles.sortButton,
+                  {
+                    backgroundColor:
+                      stats !== 'success' ? 'white' : COLORS.primary,
+                  },
+                ]}>
+                <Text
+                  style={{
+                    color: stats === 'success' ? 'white' : COLORS.accent,
+                    fontSize: 18,
+                  }}>
+                  Success
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => dispatch(setStats('failed'))}>
+              <View
+                style={[
+                  styles.sortButton,
+                  {
+                    backgroundColor:
+                      stats !== 'failed' ? 'white' : COLORS.error,
+                  },
+                ]}>
+                <Text
+                  style={{
+                    color: stats === 'failed' ? 'white' : COLORS.accent,
+                    fontSize: 18,
+                  }}>
+                  Failed
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
         <ScrollView
           style={{
-            margin: 10,
+            flex: 1,
+
+            marginHorizontal: 10,
             padding: 10,
             backgroundColor: 'white',
             borderRadius: 10,
             gap: 10,
+            borderTopWidth: 0.5,
+            borderColor: 'rgba(0,0,0,0.3)',
           }}>
           {result.map((e, i) => {
             const date = new Date(e.time);
