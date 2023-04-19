@@ -11,7 +11,7 @@ export const resultSlice = createSlice({
   initialState,
   reducers: {
     setResult: (state, action) => {
-      state.result.push(action.payload);
+      state.result.unshift(action.payload);
     },
     setReset: state => {
       state.result = [];
@@ -38,19 +38,24 @@ export const selectFilteredResults = createSelector(
     }
   },
 );
-// export const selectSuccessedResults = createSelector(
-//   selectCurrentResult,
-//   result => {
-//     return result.filter(item => item.score >= item.allQuestions / 2 && item);
-//   },
-// );
-// export const selectFailedResults = createSelector(
-//   selectCurrentResult,
-//   result => {
-//     return result.filter(item => item.score < item.allQuestions / 2 && item);
-//   },
-// );
-// export const selectAllResults = createSelector(selectCurrentResult, result => {
-//   return result;
-// });
+export const selectSuccessResultsLength = createSelector(
+  selectCurrentResult,
+  result => {
+    return result.filter(item => item.score >= item.allQuestions / 2 && item)
+      .length;
+  },
+);
+export const selectFailedResultsLength = createSelector(
+  selectCurrentResult,
+  result => {
+    return result.filter(item => item.score < item.allQuestions / 2 && item)
+      .length;
+  },
+);
+export const selectAllResultsLength = createSelector(
+  selectCurrentResult,
+  result => {
+    return result.length;
+  },
+);
 export default resultSlice.reducer;
